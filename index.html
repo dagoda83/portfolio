@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evan LE CLEC'H - Portfolio Immobilier & Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="src/style.css">
+    <style>
+        /* Glassmorphism Styles */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glassmorphism-dark {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        /* Burger Button Styles */
+        .burger {
+            position: relative;
+            width: 24px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .burger-line {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            transition: all 0.3s ease;
+            position: absolute;
+            left: 0;
+        }
+        
+        .burger-line:nth-child(1) {
+            top: 0;
+        }
+        
+        .burger-line:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .burger-line:nth-child(3) {
+            bottom: 0;
+        }
+        
+        .burger.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .burger.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+	/* Parallax Effect - Version Corrigée sans bordures */
+        .parallax-bg {
+            position: absolute; /* Crucial pour le mouvement */
+            top: -25%;          /* On la remonte pour cacher le haut */
+            left: -25%;         /* On la décale à gauche pour cacher le bord */
+            width: 150%;        /* Garde tes 150% pour avoir de la réserve */
+            height: 150%;       /* Garde tes 150% pour avoir de la réserve */
+            background-attachment: scroll; /* Changement ici : scroll est plus stable avec transform */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover; /* "cover" assure que l'image remplit tout le bloc de 150% */
+            will-change: transform;
+            pointer-events: none;   /* Pour que l'image ne bloque pas les clics sur tes boutons */
+        }
+        
+        /* Typewriter Animation */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: currentColor; }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid;
+            white-space: nowrap;
+            animation: typewriter 3s steps(40, end), blink 0.75s step-end infinite;
+        }
+        
+        /* Filmstrip Gallery - Style Copie (2) */
+        .filmstrip {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+        
+        .filmstrip-item {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .filmstrip-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+                
+        /* Lightbox Styles - Style Copie (2) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+        }
+        
+        .lightbox-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            width: 60px;
+            height: 60px;
+            pointer-events: auto;
+        }
+        
+        .lightbox-nav.left-4 {
+            left: 2rem;
+        }
+        
+        .lightbox-nav.right-4 {
+            right: 2rem;
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 8888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        /* Dark mode styles */
+        .dark {
+            color-scheme: dark;
+        }
+        
+        .dark body {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1279px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+        
+        @media (min-width: 1280px) {
+            .desktop-menu {
+                display: flex;
+            }
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+    </style>
+    
+    <!-- Custom animations for wow effects -->
+    <style>
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .animate-ping {
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        
+        .animation-delay-200 {
+            animation-delay: 200ms;
+        }
+        
+        .animation-delay-400 {
+            animation-delay: 400ms;
+        }
+        
+        .animation-delay-600 {
+            animation-delay: 600ms;
+        }
+        
+        .animation-delay-800 {
+            animation-delay: 800ms;
+        }
+        
+        .animation-delay-100 {
+            animation-delay: 100ms;
+        }
+        
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                            -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+                            0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+            14% {
+                text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                            -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+                            0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+            15% {
+                text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                            0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                            -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+            49% {
+                text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                            0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                            -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+            50% {
+                text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                            0.05em 0 0 rgba(0, 255, 0, 0.75),
+                            0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+            99% {
+                text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                            0.05em 0 0 rgba(0, 255, 0, 0.75),
+                            0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+        }
+        
+        .group:hover .animate-glitch {
+            animation: glitch 0.3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    
+    <!-- Preloader with Portaille -->
+    <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <img src="Images/Portaille.jpg" alt="Portail d'entrée" class="absolute inset-0 w-full h-full object-cover">
+        <button id="enterBtn" class="relative z-10 group px-16 py-6 overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-700 hover:bg-white/10 hover:border-white/20 transform translate-y-56">
+            
+            <!-- Subtle animated gradient overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            
+            <!-- Elegant border shimmer -->
+            <div class="absolute inset-0 rounded-2xl">
+                <div class="absolute inset-0 rounded-2xl border border-transparent bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+            </div>
+            
+            <!-- Clean typography with subtle effect -->
+            <div class="relative z-10 flex items-center justify-center">
+                <span class="text-white/90 font-medium text-xl tracking-[0.2em] italic group-hover:text-white transition-all duration-700 group-hover:tracking-[0.3em] group-hover:not-italic">
+                    Entrer
+                </span>
+            </div>
+            
+            <!-- Minimalist hover indicator -->
+            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/40 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
+            
+            <!-- Subtle glow effect -->
+            <div class="absolute -inset-1 rounded-2xl bg-white/5 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-700"></div>
+        </button>
+    </div>
+    
+    <!-- Video Modal -->
+    <div id="videoModal" class="fixed inset-0 z-50 hidden">
+        <video id="introVideo" class="w-full h-full object-cover" autoplay>
+            <source src="Images/intro.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Loading bar -->
+        <div id="videoLoadingBar" class="absolute bottom-0 left-0 w-full h-1 bg-black/50">
+            <div id="videoProgress" class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 w-0 transition-all duration-300"></div>
+        </div>
+        
+        <div id="skipText" class="absolute bottom-8 right-8 text-white/70 text-sm cursor-pointer hover:text-white transition-colors">
+            Cliquer pour passer
+        </div>
+    </div>
+    
+    <!-- Header Navigation -->
+    <header class="fixed top-0 w-full z-40 glassmorphism">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo/Name -->
+                <button onclick="scrollToSection('contact')" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
+                    Evan LE CLEC'H
+                </button>
+                
+                <!-- Desktop Menu -->
+                <div class="desktop-menu items-center space-x-8">
+                    <a href="#home" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Home
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#parcours" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Parcours
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#experiences" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Expériences
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#projets" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Projets
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#passions" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Passions
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#competences" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Compétences
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#explorations" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Explorations
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#recommandations" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Recommandations
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#contact" class="nav-link text-white/80 hover:text-white transition-colors relative group">
+                        Contact
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                
+                <!-- Right Side Controls -->
+                <div class="flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <button id="langToggle" class="p-2 rounded-lg glassmorphism hover:bg-white/20 transition-colors">
+                        <span id="currentFlag" class="text-2xl">🇫🇷</span>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="p-2 rounded-lg glassmorphism hover:bg-white/20 transition-colors">
+                        <i data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobileMenuToggle" class="mobile-menu-toggle burger">
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden mt-4 glassmorphism rounded-lg p-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#home" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Home</a>
+                    <a href="#parcours" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Parcours</a>
+                    <a href="#experiences" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Expériences</a>
+                    <a href="#projets" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Projets</a>
+                    <a href="#passions" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Passions</a>
+                    <a href="#competences" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Compétences</a>
+                    <a href="#explorations" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Explorations</a>
+                    <a href="#recommandations" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Recommandations</a>
+                    <a href="#contact" class="mobile-nav-link text-white/80 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <!-- Fond parallaxe -->
+            <div class="parallax-bg absolute inset-0" style="background-image: url('Images/Home.jpg'); background-size: 110% 110%;"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+            
+            <!-- Contenu texte fixe -->
+            <div class="relative z-10 text-center px-6">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span id="typewriterText" class="typewriter"></span>
+                </h1>
+                <h2 class="text-3xl md:text-5xl font-bold mb-8 text-white">Evan LE CLEC'H</h2>
+                <button onclick="scrollToSection('contact')" class="glassmorphism px-8 py-4 rounded-full text-white font-semibold hover:bg-white/30 transition-all duration-300 transform hover:scale-105">
+                    Travaillons ensemble
+                </button>
+            </div>
+        </section>
+        
+        <!-- Parcours Section -->
+        <section id="parcours" class="py-20 px-6 bg-slate-800">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Parcours</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- BTS Immobilier -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('bts-immobilier')">
+                        <img src="Images/parcours/BTS Immobilier/immo.jpg" alt="BTS Immobilier" class="w-full h-48 object-cover rounded-lg mb-4" loading="lazy">
+                        <h3 class="text-xl font-bold mb-2">🎓 2025 – 2027 : BTS Professions Immobilières</h3>
+                        <p class="text-gray-300">Lycée Raynouard, Brignoles</p>
+                    </div>
+                    
+                    <!-- BUT R&T -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('but-rt')">
+                        <img src="Images/parcours/BUT R&T/config.JPG" alt="BUT R&T" class="w-full h-48 object-cover rounded-lg mb-4" loading="lazy">
+                        <h3 class="text-xl font-bold mb-2">🎓 2023 – 2024 : BUT Réseaux & Télécoms</h3>
+                        <p class="text-gray-300">IUT Luminy, Marseille - Cybersécurité</p>
+                    </div>
+                    
+                    <!-- Bac Général -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('bac-general')">
+                        <img src="Images/parcours/Bac général/Bac Général.jpg" alt="Bac Général" class="w-full h-48 object-cover rounded-lg mb-4" loading="lazy">
+                        <h3 class="text-xl font-bold mb-2">🎓 2023 : Baccalauréat Général</h3>
+                        <p class="text-gray-300">Spécialités Maths & NSI - Lycée Joliot-Curie, Aubagne</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Expériences Section -->
+        <section id="experiences" class="py-20 px-6 bg-slate-900">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Expériences</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Stage Immobilier -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('stage-immobilier')">
+                        <img src="Images/expériences/StageImmo/stageimmo.jpg" alt="Stage Immobilier" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">🏠 Stage Immobilier - Agence ERA</h3>
+                        <p class="text-gray-300">Roquevaire - Janvier 2026</p>
+                    </div>
+                    
+                    <!-- McDo -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('mcdonalds')">
+                        <img src="Images/Expériences/Mcdo/mcdo.jpg" alt="McDonald's" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">🍔 Employé Polyvalent - McDonald's</h3>
+                        <p class="text-gray-300">La Destrousse - Depuis 2025</p>
+                    </div>
+                    
+                    <!-- Animateur -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('animateur')">
+                        <img src="Images/expériences/animateur/ombre.jpg" alt="Animateur" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">🎯 Animateur - Centres de Loisirs</h3>
+                        <p class="text-gray-300">Aubagne & St-Zacharie - Depuis 2023</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projets Section -->
+        <section id="projets" class="py-20 px-6 bg-slate-800">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Projets</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- CRM Immobilier -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('crm-immobilier')">
+                        <img src="Images/Projets/QR.png" alt="CRM Immobilier" class="w-full h-32 object-contain rounded-lg mb-4">
+                        <h3 class="text-lg font-bold mb-2">📊 CRM Immobilier Sur-Mesure</h3>
+                        <p class="text-sm text-gray-300">En cours de développement</p>
+                    </div>
+                    
+                    <!-- Simulateur -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('simulateur')">
+                        <div class="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="calculator" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">📈 Simulateur d'Estimation</h3>
+                        <p class="text-sm text-gray-300">Outil intégré interactif</p>
+                    </div>
+                    
+                    <!-- Analyse Marché -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('analyse-marche')">
+                        <div class="w-full h-32 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">📉 Analyse Comparative de Marché</h3>
+                        <p class="text-sm text-gray-300">Secteur Var/Bouches-du-Rhône</p>
+                    </div>
+                    
+                    <!-- Stratégie Marketing -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('strategie-marketing')">
+                        <div class="w-full h-32 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="megaphone" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">📣 Stratégie Marketing & Visibilité</h3>
+                        <p class="text-sm text-gray-300">Communication immobilière</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Passions Section -->
+        <section id="passions" class="py-20 px-6 bg-slate-900">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Passions</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Sports -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-sports')">
+                        <img src="Images/Passions/sports/sport.jpeg" alt="Sports" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🏃 Sports</h3>
+                    </div>
+                    
+                    <!-- Automobile -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-automobile')">
+                        <img src="Images/Passions/Automobile/auto.jpg" alt="Automobile" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🏎️ Automobile</h3>
+                    </div>
+                    
+                    <!-- Voyage -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-voyage')">
+                        <img src="Images/Passions/Voyage/voyage.jpeg" alt="Voyage" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🌍 Voyage</h3>
+                    </div>
+                    
+                    <!-- Architecture -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-architecture')">
+                        <img src="Images/Passions/Architecture/archi.jpg" alt="Architecture" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🏛️ Architecture</h3>
+                    </div>
+                    
+                    <!-- Mode -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-mode')">
+                        <img src="Images/Passions/Mode/mode.jpg" alt="Mode" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🕶️ Mode</h3>
+                    </div>
+                    
+                    <!-- Photographie -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-photographie')">
+                        <img src="Images/Passions/Photographie/ft.jpeg" alt="Photographie" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">📸 Photographie</h3>
+                    </div>
+                    
+                    <!-- Cinematographie -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-cinema')">
+                        <img src="Images/Passions/Cinematographie/cinema.jpg" alt="Cinéma" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🎬 Cinématographie</h3>
+                    </div>
+                    
+                    <!-- Cuisine -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-cuisine')">
+                        <img src="Images/Passions/Cuisine/cuisine.png" alt="Cuisine" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🍳 Cuisine</h3>
+                    </div>
+                    
+                    <!-- Musique -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-musique')">
+                        <img src="Images/Passions/Music/music5.jpeg" alt="Musique" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🎧 Musique</h3>
+                    </div>
+                    
+                    <!-- Mer Nature -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-mer')">
+                        <img src="Images/Passions/Mer Nature/sud.png" alt="Mer & Nature" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">🌊 Mer Nature</h3>
+                    </div>
+                    
+                    <!-- Sensations Fortes -->
+                    <div class="glassmorphism rounded-lg p-4 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('passions-sensations')">
+                        <img src="Images/Passions/Sensations fortes/CalmAndJump.PNG" alt="Sensations Fortes" class="w-full h-24 object-cover rounded-lg mb-2">
+                        <h3 class="text-sm font-bold text-center">⚡ Sensations Fortes</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Compétences Section -->
+        <section id="competences" class="py-20 px-6 bg-slate-800">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Compétences</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Savoir-être & Savoir-faire -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('competences-savoir')">
+                        <div class="w-full h-32 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="brain" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">🧠 Mon Savoir-Être & Savoir-Faire</h3>
+                        <p class="text-gray-300">L'humain et la technique</p>
+                    </div>
+                    
+                    <!-- Certifications -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('competences-certifications')">
+                        <div class="w-full h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="award" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">📜 Certifications & Diplômes Officiels</h3>
+                        <p class="text-gray-300">La preuve par les titres</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Explorations Section -->
+        <section id="explorations" class="py-20 px-6 bg-slate-900">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Explorations</h2>
+                <p class="text-center text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Bienvenue dans mon laboratoire d'idées. Ici, je rassemble mes recherches, mes cours et mes analyses autour de sujets qui m'intéressent vraiment.
+                </p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Immobilier & Marché -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-immobilier')">
+                        <div class="w-full h-24 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="home" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">📊 Immobilier & Marché</h3>
+                        <p class="text-sm text-gray-300">Analyses et tendances du marché</p>
+                    </div>
+                    
+                    <!-- Tech & Cybersécurité -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-tech')">
+                        <div class="w-full h-24 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="shield" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">🛡️ Tech & Cybersécurité</h3>
+                        <p class="text-sm text-gray-300">Organisation SOC / CERT</p>
+                    </div>
+                    
+                    <!-- Enjeux de Société -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-societe')">
+                        <div class="w-full h-24 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="globe" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">🌍 Enjeux de Société</h3>
+                        <p class="text-sm text-gray-300">Géographie et droits</p>
+                    </div>
+                    
+                    <!-- Performance & Technique -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-performance')">
+                        <div class="w-full h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">🏎️ Performance & Technique</h3>
+                        <p class="text-sm text-gray-300">Pilotage & Photographie</p>
+                    </div>
+                    
+                    <!-- Psycho -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-psycho')">
+                        <div class="w-full h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="psychology" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">🧠 Psycho</h3>
+                        <p class="text-sm text-gray-300">Psychanalyse de l'art</p>
+                    </div>
+                    
+                    <!-- Autres -->
+                    <div class="glassmorphism rounded-xl p-6 cursor-pointer hover:transform hover:scale-105 transition-all duration-300" onclick="openModal('explorations-autres')">
+                        <div class="w-full h-24 bg-gradient-to-br from-gray-500 to-gray-700 rounded-lg mb-4 flex items-center justify-center">
+                            <i data-lucide="folder" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">📂 Autres</h3>
+                        <p class="text-sm text-gray-300">Maths, langues, culture</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recommandations Section -->
+        <section id="recommandations" class="py-20 px-6 bg-slate-800">
+            <div class="container mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-12">Mes Recommandations</h2>
+                <p class="text-center text-gray-300 mb-12 max-w-3xl mx-auto">
+                    On est la moyenne des contenus que l'on consomme. Voici une sélection des plateformes, films et outils qui nourrissent ma réflexion.
+                </p>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Plateformes & Savoir -->
+                    <div class="glassmorphism rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-blue-400">🌐 Plateformes & Savoir</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>🔴 TED.com : Excellence de la vulgarisation</li>
+                            <li>🔴 PsychologyToday.com : Compréhension des comportements</li>
+                            <li>🔴 Greatist.com : Équilibre de vie et bien-être</li>
+                            <li>🔴 Digital-Photography-School.com : Technique photo</li>
+                            <li>🔴 worldcams.tv : Webcams mondiales</li>
+                            <li>🔴 web.archive.org : Archives web</li>
+                            <li>🔴 awwwards : Design et inspiration</li>
+                            <li>🔴 jitter : Motion design</li>
+                            <li>🔴 toolfolio : Outils numériques</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Applications -->
+                    <div class="glassmorphism rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-green-400">📱 Applications</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>🔴 Sophia : Culture générale française</li>
+                            <li>🔴 LinkedIn Learning : Veille immobilière</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Cinéma & Réflexion -->
+                    <div class="glassmorphism rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-purple-400">🎬 Cinéma & Réflexion</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>🔴 The Big Short : Comprendre les subprimes</li>
+                            <li>🔴 Wake Up Dead Man / Heretic : Questionner les croyances</li>
+                            <li>🔴 Inception : Architecture mentale</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Chaînes & Créateurs -->
+                    <div class="glassmorphism rounded-xl p-6 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-4 text-orange-400">📺 Chaînes & Créateurs</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>🔴 Heu?reka : Économie et finance</li>
+                            <li>🔴 Underscore_ : Veille tech et cybersécurité</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-6 bg-slate-900">
+            <div class="container mx-auto max-w-4xl">
+                <h2 class="text-4xl font-bold text-center mb-12">Contact & Échanges</h2>
+                
+                <!-- Profil -->
+                <div class="glassmorphism rounded-2xl p-8 mb-6">
+                    <div class="flex items-center">
+                        <img src="Images/Contact/CV.jpg" alt="Evan LE CLEC'H" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500/30 shadow-lg shadow-blue-500/20 mr-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Un projet immobilier, une question technique, ou simplement besoin d'un regard neuf sur la valeur de votre bien ?</h3>
+                            <p class="text-gray-300">Je suis à votre écoute.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estimation Gratuite -->
+                <div class="glassmorphism rounded-2xl p-8 mb-6">
+                    <h3 class="text-2xl font-bold mb-4">🏠 Challengez mon expertise : Estimation Gratuite</h3>
+                    <div class="bg-blue-900/20 p-6 rounded-lg mb-4">
+                        <h4 class="font-bold mb-3">🔴 Pourquoi me solliciter ?</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>• Je cherche à parfaire ma connaissance du marché local (Var et Bouches-du-Rhône) au quotidien.</li>
+                            <li>• Je vous propose une étude comparative de marché (ACM) complète, sans aucun engagement de votre part.</li>
+                            <li>• Le but : Vous donner une valeur réelle, basée sur les données transactionnelles et mon analyse technique.</li>
+                        </ul>
+                    </div>
+                    <button onclick="preFillForm('estimation')" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        👉 DEMANDER UNE ESTIMATION SANS ENGAGEMENT
+                    </button>
+                </div>
+                
+                <!-- Futur Collaborateur -->
+                <div class="glassmorphism rounded-2xl p-8 mb-6">
+                    <h3 class="text-2xl font-bold mb-4">🤝 Futur Collaborateur (Job / Stage / Alternance)</h3>
+                    <div class="bg-green-900/20 p-6 rounded-lg mb-4">
+                        <h4 class="font-bold mb-3">🔴 Mon profil vous intéresse ?</h4>
+                        <p class="text-gray-300 mb-3">Je suis activement à la recherche d'opportunités pour mettre ma rigueur au service de votre agence.</p>
+                        
+                        <h4 class="font-bold mb-3">🔴 Besoin d'un coup de main ? Je suis votre homme.</h4>
+                        <p class="text-gray-300 mb-3">Au-delà de l'immobilier, je suis quelqu'un de terrain. J'aime quand ça bouge et je ne rechigne jamais à la tâche.</p>
+                        
+                        <h4 class="font-bold mb-3">Ce que je sais faire (entre autres) :</h4>
+                        <ul class="space-y-2 text-gray-300 mb-3">
+                            <li>• 🚛 Logistique & Manutention : Aide au déménagement, réorganisation d'espace</li>
+                            <li>• ⚡ Renfort Événementiel : Accueil, logistique, gestion de flux</li>
+                            <li>• 🛠️ Missions de services : Chauffeur (Permis B), assistant, missions ponctuelles</li>
+                            <li>• 🖥️ Assistance Numérique : Mise en place d'outils, digitalisation, base de données</li>
+                        </ul>
+                        
+                        <p class="text-gray-300">
+                            <strong>Pourquoi moi ?</strong> Parce que je suis ponctuel, je comprends vite les consignes et je bosse proprement.
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="preFillForm('mission')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            👉 ME PROPOSER UNE MISSION
+                        </button>
+                        <a href="CV/Curriculum Vitae.pdf" target="_blank" class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 text-center">
+                            👉 CONSULTER / TÉLÉCHARGER MON CV (PDF)
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Formulaire de contact -->
+                <div class="glassmorphism rounded-2xl p-8 mb-6">
+                    <h3 class="text-2xl font-bold mb-6">📧 Formulaire de Contact</h3>
+                    <form id="contactForm" class="space-y-4" action="https://formspree.io/f/mpqknaqo" method="POST">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-300 mb-2">Nom complet *</label>
+                                <input type="text" name="name" required class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2">Email *</label>
+                                <input type="email" name="email" required class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-300 mb-2">Objet *</label>
+                            <select name="subject" required class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Sélectionnez un objet</option>
+                                <option value="Demande d'estimation immobilière">Demande d'estimation immobilière</option>
+                                <option value="Proposition de mission / job">Proposition de mission / job</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-300 mb-2">Message *</label>
+                            <textarea name="message" rows="5" required class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                        </div>
+                        
+                        <!-- Honeypot -->
+                        <input type="text" name="_gotcha" style="display:none;">
+                        
+                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
+                            Envoyer le message
+                        </button>
+                    </form>
+                    
+                    <div id="formMessage" class="mt-4 hidden"></div>
+                </div>
+                
+                <!-- Coordonnées -->
+                <div class="glassmorphism rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">On discute ?</h3>
+                    
+                    <div class="bg-gray-800 p-6 rounded-lg mb-6">
+                        <p class="text-lg text-gray-300 mb-6">📱 Un projet immo ou un job à proposer ? Appelez-moi ou envoyez-moi un message direct. Je réponds plus vite que mon ombre.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="glassmorphism rounded-lg p-4">
+                                <h4 class="font-bold mb-2">📞 Téléphone</h4>
+                                <p class="text-blue-400">Disponible sur demande</p>
+                            </div>
+                            <div class="glassmorphism rounded-lg p-4">
+                                <h4 class="font-bold mb-2">📧 Email</h4>
+                                <p class="text-blue-400">evanleclech2006@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center space-x-4">
+                            <a href="https://linkedin.com/in/evan-le-clec-h" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                LinkedIn
+                            </a>
+                            <a href="https://tiktok.com/@evanleclech" target="_blank" class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg transition-colors">
+                                TikTok
+                            </a>
+                            <a href="https://facebook.com/evan.leclech.2006" target="_blank" class="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg transition-colors">
+                                Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-12 px-6">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <!-- Identité -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Evan LE CLEC'H</h3>
+                    <p class="text-gray-400 mb-2">Futur professionnel de l'immobilier</p>
+                    <p class="text-gray-400 italic">"La rigueur du numérique, la passion du terrain."</p>
+                    <p class="text-gray-500 text-sm mt-4">© 2026 – Tous droits réservés.</p>
+                </div>
+                
+                <!-- Accès Rapides -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Accès Rapides</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#explorations" class="hover:text-white transition-colors">Mon Labo : Explorations & Analyses</a></li>
+                        <li><a href="#projets" class="hover:text-white transition-colors">Projets : CRM & Simulateur</a></li>
+                        <li><a href="CV/Curriculum Vitae.pdf" target="_blank" class="hover:text-white transition-colors">Recrutement : Mon CV en un clic</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Opportunités : Missions & Bons plans</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Coordonnées -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Me Joindre</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>📍 Secteur 13 / 83 (Aix, Aubagne, Brignoles)</li>
+                        <li>📧 <a href="mailto:evanleclech2006@gmail.com" class="hover:text-white transition-colors">evanleclech2006@gmail.com</a></li>
+                        <li>📞 <a href="tel:+33788261995" class="hover:text-white transition-colors">07 88 26 19 95</a></li>
+                        <li class="flex space-x-4 mt-4">
+                            <a href="https://www.linkedin.com/in/evan-le-clec'h-051495357" target="_blank" class="hover:text-white transition-colors">LinkedIn</a>
+                            <a href="https://www.tiktok.com/@dealamazon1?is_from_webapp=1&sender_device=pc" target="_blank" class="hover:text-white transition-colors">TikTok</a>
+                            <a href="https://www.facebook.com/profile.php?id=61556930732384" target="_blank" class="hover:text-white transition-colors">Facebook</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bandeau Final -->
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-400">
+                    <strong>Discipline, Réactivité & Curiosité</strong> Portfolio conçu et optimisé par Evan LE CLEC'H.
+                    <span class="text-blue-400">(Disponible pour missions urgentes et opportunités sérieuses ⚡)</span>
+                </p>
+                <p class="text-gray-500 text-sm mt-4">
+                    <a href="#" class="hover:text-white transition-colors">Mentions Légales & Confidentialité</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+            <div class="glass-dark rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+                <div class="sticky top-0 glass-dark border-b border-white/10 p-4 flex justify-between items-center z-10">
+                    <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                    <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-all duration-300 transform hover:rotate-90">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div id="modalContent" class="p-6 overflow-y-auto flex-1">
+                    <!-- Content will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-nav left-4" onclick="event.stopPropagation(); navigateLightboxLeft()">
+            <i data-lucide="chevron-left" class="w-8 h-8 text-white"></i>
+        </button>
+        <img id="lightboxImg" class="lightbox-content" src="" alt="">
+        <button class="lightbox-nav right-4" onclick="event.stopPropagation(); navigateLightboxRight()">
+            <i data-lucide="chevron-right" class="w-8 h-8 text-white"></i>
+        </button>
+        <button onclick="event.stopPropagation(); closeLightbox()" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-all duration-300">
+            <i data-lucide="x" class="w-6 h-6 text-white"></i>
+        </button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="src/main.js"></script>
+</body>
+</html>
